@@ -5,19 +5,28 @@ app.use(express.json())
 app.listen(9999)
 
 //로그인
-// app.post('/login', (req, res) => {
-//     const userId = req.body.id
-//     const pwd = req.body.password
-//     if () {
-//         res.status(201).json({
-//             message : `${id}님, 성공적으로 로그인 되었습니다.`
-//         })
-//     } else {
-//         res.status(404).json({
-//             message : `ID와 일치하는 회원 정보를 찾을 수 없습니다. 다시 시도하세요.`
-//         })
-//     }
-// })
+app.post('/login', (req, res) => {
+    const {userId, pwd} = req.body
+
+    db.forEach((user, id) => {
+        if (user.userId === userId) {
+
+            if (user.pwd === pwd) {
+                res.status(201).json({
+                    message : `${user.name}님, 성공적으로 로그인 되었습니다.`
+                })
+            } else {
+                res.status(404).json({
+                    message : "비밀번호가 일치하지 않습니다. 다시 시도하세요."
+                })
+            }
+        } else {
+            res.status(404).json({
+                message : "회원 정보를 찾을 수 없습니다. 다시 시도하세요."
+            })
+        }
+    })
+})
 
 //회원가입
 app.post('/join', (req, res) => {
